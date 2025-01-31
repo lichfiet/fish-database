@@ -10,3 +10,4 @@
 //   - containerize
 //   - add tests
 //   - add validation middleware
+//   - env vars
