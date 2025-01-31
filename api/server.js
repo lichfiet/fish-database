@@ -72,4 +72,3 @@ axios.get('http://localhost:3000/fish?fishname=*').then(response => { console.lo
 //axios.post('http://localhost:3000/fish', { fishname: 'salmon3' }).then(response => { console.log(response.data) })
 axios.delete('http://localhost:3000/fish?fishname=salmon').then(response => { console.log(response.data) })
 
- 
