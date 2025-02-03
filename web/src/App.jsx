@@ -18,53 +18,78 @@ function App() {
   const [fish, setFish] = useState([]);
   const [addForm, setAddForm] = useState("");
   const [delForm, setDelForm] = useState("");
+  const [fishUpdated, setFishUpdated] = useState(false);
+
+  useEffect(() => {
+    axios.get("http://localhost:3000/fish?fishname=*").then((res) => {
+      setFish(res.data.message);
+    }).catch((err) => console.log(err));
+  }, []);
+
 
   return (
     <>
+      {
+        useEffect(() => {
+          if (fishUpdated == true) {
+            axios.get("http://localhost:3000/fish?fishname=*").then((res) => {
+              setFish(res.data.message);
+            }).catch((err) => console.log(err));
+
+            console.log("Fish Updated");
+
+            setFishUpdated(false);
+          } else {
+            console.log("Fish Not Updated");
+          }
+        }, [fishUpdated])
+      }
       <h1>Test Fish</h1>
       <div>
         <div id="buttonBar">
           <row>
-            <column class="buttonColumn">
+            <column className="buttonColumn">
               <input
                 type="text"
                 placeholder="Fish Name"
                 onChange={(e) => setAddForm(e.target.value)}
-                class="buttonForm"
+                className="buttonForm"
               />
               <button
                 type="button"
-                onClick={() =>
-                  axios.post("http://localhost:3000/fish", {
+                onClick={async () => {
+                  await axios.post("http://localhost:3000/fish", {
                     fishname: addForm,
-                  })
+                  }); setFishUpdated(true);
+                }
                 }
               >
                 Add Fish
               </button>
             </column>
-            <column class="buttonColumn">
+            <column className="buttonColumn">
               <input
                 type="text"
                 placeholder="Fish Name"
                 onChange={(e) => setDelForm(e.target.value)}
-                class="buttonForm"
+                className="buttonForm"
               />
               <button
                 type="button"
-                onClick={() =>
-                  axios.delete(
+                onClick={async () => {
+                  await axios.delete(
                     "http://localhost:3000/fish?fishname=" +
-                      delForm +
-                      "&fishid=" +
-                      delForm
-                  )
+                    delForm +
+                    "&fishid=" +
+                    delForm
+                  ); setFishUpdated(true);
+                } // 
                 }
               >
                 Delete Fish
               </button>
             </column>
-            <column class="buttonColumn">
+            <column className="buttonColumn">
               <button
                 onClick={() =>
                   axios
