@@ -11,15 +11,16 @@
 //   - add tests
 //   - add validation middleware
 //   - env vars
-
 const { default: axios } = require("axios");
 const express = require("express");
 const app = express(); // this is the api server
-app.use(express.json()); // this is to parse the json body
+const cors = require("cors");
+app.use(express.json(), cors()); // this is to parse the json body
 const port = 3000;
 const database = require("./database/main.js");
 // check health
 app.get("/health", (_, res) => {
+  database.healthCheck();
   res.status(200).send({ message: "Healthy" });
 });
 
@@ -30,6 +31,7 @@ app.listen(port, () => {
 
 // fish search commands
 app.get("/fish", async (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
   fishName = req.query.fishname || "";
   try {
     const fish = await database.fish.getFish(fishName);
@@ -39,6 +41,7 @@ app.get("/fish", async (req, res) => {
     }
     res.send({ message: fishes });
   } catch (error) {
+    console.log(error);
     res.send({ message: `Error searching fish: ${error}` });
   }
 });
@@ -64,13 +67,4 @@ app.post("/fish", async (req, res) => {
   } catch (error) {
     res.send({ message: `Error adding fish: ${error}` });
   }
-});
-
-// IT WORKS YIPPEEEEE
-axios.get("http://localhost:3000/fish?fishname=*").then((response) => {
-  console.log(response.data);
-});
-//axios.post('http://localhost:3000/fish', { fishname: 'salmon3' }).then(response => { console.log(response.data) })
-axios.delete("http://localhost:3000/fish?fishname=salmon").then((response) => {
-  console.log(response.data);
 });

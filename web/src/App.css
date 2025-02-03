@@ -1,5 +1,6 @@
 #root {
-  max-width: 1280px;
+  min-width: 100vw;
+  min-height: 100vh;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
@@ -39,4 +40,19 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.buttonColumn {
+  max-width: 15vw;
+  padding: 1em;
+  border: 0.1em solid black;
+}
+
+.buttonForm {
+  margin-right: 0.5em;
+  max-width: 8vw;
+}
+
+#fishTable {
+  padding: 1em;
 }

@@ -5,8 +5,19 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=postgres
+      - POSTGRES_DB=db
     ports:
       - 5432:5432
     volumes:
-      - /etc/postgres_docker:/var/lib/postgresql/data 
+      - /etc/postgres_docker:/var/lib/postgresql/data
+
+  api:
+    image: node:18
+    working_dir: /app
+    volumes:
+      - ./:/app
+    ports:
+      - 3000:3000
+    command: npm start
+    depends_on:
+      - postgres
